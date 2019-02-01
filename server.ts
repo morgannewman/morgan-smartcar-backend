@@ -6,9 +6,9 @@ import express, {
 } from 'express';
 import morgan from 'morgan';
 
-import { ApiError, apiErrorResponse } from './base/errors';
-import { validateEngineAction } from './base/helpers';
-import { controller } from './controller';
+import { ApiError, apiErrorResponse } from './api/common/errors';
+import { validateEngineAction } from './api/common/validators';
+import { controller } from './api/controller';
 
 export const app: App = express();
 

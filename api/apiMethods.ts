@@ -5,7 +5,7 @@ import {
   engineState,
   fuelState,
   vehicleInfo,
-} from './returnTypes';
+} from './apiReturnTypes';
 
 export interface BaseApiMethods {
   getVehicleInfo: (id: string) => Promise<vehicleInfo>;

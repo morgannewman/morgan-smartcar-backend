@@ -1,13 +1,13 @@
 import { NextFunction as Next, Request as Req, Response as Res } from 'express';
 
-import { adapters } from '../adapters';
-import { BaseApiMethods } from '../base/baseApiMethods';
-import { ApiError } from '../base/errors';
-import { mapIdToManufacturer } from '../base/helpers';
+import { adapters } from './adapters';
+import { BaseApiMethods } from './apiMethods';
+import { ApiError } from './common/errors';
+import { mapIdToManufacturer } from './common/helpers';
 
 /**
  * Controllers can only handle methods that are defined in BaseApiMethods.
- * 1. Maps the given ID to a manufacturer key
+ * 1. Maps the given ID to a manufacturer string
  * 2. Select the correct API adapter based on the manufacturer
  * 3. Uses the adapter to execute the correct API method
  */

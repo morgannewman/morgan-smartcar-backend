@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Smartcar API definitions
-import { BaseApiMethods } from '../../base/baseApiMethods';
+import { BaseApiMethods } from '../../apiMethods';
 import {
   batteryState,
   doorLockState,
@@ -9,16 +9,10 @@ import {
   engineState,
   fuelState,
   vehicleInfo,
-} from '../../base/returnTypes';
+} from '../../apiReturnTypes';
 
 // GM API definitions
-import {
-  normalizeGmBatteryState,
-  normalizeGmDoorState,
-  normalizeGmEngineState,
-  normalizeGmFuelState,
-  normalizeGmVehicleInfo,
-} from './gmNormalizers';
+import { gmNormalizer } from './gmNormalizer';
 import {
   gmDoorLockState,
   gmEnergyState,
@@ -39,10 +33,14 @@ const gmRequest = async (
   return res.data;
 };
 
+/**
+ * By implementing BaseApiMethods, it is safe to use this adapter as a strategy
+ * for any methods supported in the API.
+ */
 export const gm: BaseApiMethods = {
   getVehicleInfo: async (id: string): Promise<vehicleInfo> => {
     const info: gmVehicleInfo = await gmRequest('/getVehicleInfoService', id);
-    return normalizeGmVehicleInfo(info);
+    return gmNormalizer.vehicleInfo(info);
   },
 
   getDoorState: async (id: string): Promise<doorLockState> => {
@@ -50,17 +48,17 @@ export const gm: BaseApiMethods = {
       '/getSecurityStatusService',
       id
     );
-    return normalizeGmDoorState(doorState);
+    return gmNormalizer.doorState(doorState);
   },
 
   getBatteryState: async (id: string): Promise<batteryState> => {
     const energyState: gmEnergyState = await gmRequest('/getEnergyService', id);
-    return normalizeGmBatteryState(energyState);
+    return gmNormalizer.batteryState(energyState);
   },
 
   getFuelState: async (id: string): Promise<fuelState> => {
     const energyState: gmEnergyState = await gmRequest('/getEnergyService', id);
-    return normalizeGmFuelState(energyState);
+    return gmNormalizer.fuelState(energyState);
   },
 
   setEngineState: async (
@@ -76,6 +74,6 @@ export const gm: BaseApiMethods = {
       id,
       gmAction
     );
-    return normalizeGmEngineState(state);
+    return gmNormalizer.engineState(state);
   },
 };
