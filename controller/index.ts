@@ -7,6 +7,9 @@ import { mapIdToManufacturer } from '../base/helpers';
 
 /**
  * Controllers can only handle methods that are defined in BaseApiMethods.
+ * 1. Maps the given ID to a manufacturer key
+ * 2. Select the correct API adapter based on the manufacturer
+ * 3. Uses the adapter to execute the correct API method
  */
 const controllerFactory = (method: keyof BaseApiMethods) => async (
   req: Req,
@@ -20,10 +23,21 @@ const controllerFactory = (method: keyof BaseApiMethods) => async (
   if (!manufacturer) return next(new ApiError('Vehicle not found.'));
 
   const adapter: BaseApiMethods = adapters[manufacturer];
-  if (!adapter) return next(new ApiError(`${manufacturer} is not supported.`));
+  if (!adapter) {
+    // This technically should never happen, but I have trust issues.
+    return next(new ApiError(`${manufacturer} is not supported.`));
+  }
 
-  const state = await adapter[method](id, body);
-  return res.status(200).json(state);
+  try {
+    const state = await adapter[method](id, body);
+    return res.status(200).json(state);
+  } catch (e) {
+    // Handles the adapter backend request failing. Would need to be more
+    // sophisticated in production.
+    return next(
+      new ApiError('Call the paramedics! Our servers are down.', 503)
+    );
+  }
 };
 
 export const controller = {
