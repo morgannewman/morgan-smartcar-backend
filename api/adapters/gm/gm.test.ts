@@ -1,6 +1,18 @@
 import { gm } from './';
 
 /**
+ * Overview of Test File
+ * 1. Define mock data and validators
+ * 2. Define an array of method tests
+ * 3. Programmatically construct tests from the array
+ *
+ * Could probably be improved by more modularization if this were to be a
+ * production application.
+ *
+ * Could probably be improved by assigning more meaningful names to each test.
+ */
+
+/**
  * Mock data and validators
  */
 
