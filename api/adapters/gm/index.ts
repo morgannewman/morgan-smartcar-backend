@@ -48,7 +48,12 @@ export const gm: BaseApiMethods = {
       '/getSecurityStatusService',
       id
     );
-    return gmNormalizer.doorState(doorState);
+    return (
+      gmNormalizer
+        .doorState(doorState)
+        // Ensures this list always returns in the same order
+        .sort((a, b) => a.location.localeCompare(b.location))
+    );
   },
 
   getBatteryState: async (id: string): Promise<batteryState> => {
