@@ -1,5 +1,5 @@
-import axios, { AxiosResponse, AxiosError } from 'axios';
-import { app } from './server';
+import axios, { AxiosResponse } from 'axios';
+import { server } from './server';
 
 /**
  * Overview of Test File
@@ -181,7 +181,11 @@ const tests: integrationTest[] = [
  */
 
 beforeAll(() => {
-  app.listen(8090);
+  server.listen(8090);
+});
+
+afterAll(() => {
+  server.close();
 });
 
 const BASE_URL = 'http://127.0.0.1:8090/vehicles';

@@ -4,13 +4,14 @@ import express, {
   Request as Req,
   Response as Res,
 } from 'express';
+import http from 'http';
 import morgan from 'morgan';
 
 import { ApiError, apiErrorResponse } from './api/common/errors';
 import { validateEngineAction } from './api/common/validators';
 import { controller } from './api/controller';
 
-export const app: App = express();
+const app: App = express();
 
 app.use(express.json());
 
@@ -46,10 +47,14 @@ app.use((err: ApiError, req: Req, res: Res, next: Next) => {
   return res.status(result.status).json(result);
 });
 
+export const server = http.createServer(app);
 const PORT = process.env.PORT || '8080';
-app.listen(PORT, () => {
-  console.info(`Server listening on ${PORT}`);
-});
+
+if (require.main === module) {
+  server.listen(PORT, () => {
+    console.info(`Server listening on ${PORT}`);
+  });
+}
 
 process.on('unhandledRejection', () => {
   console.error(
