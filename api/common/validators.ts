@@ -1,5 +1,5 @@
 import { NextFunction as Next, Request as Req, Response as Res } from 'express';
-import { engineAction } from '../adapters/apiReturnTypes';
+import { engineAction } from '../apiReturnTypes';
 import { ApiError } from './errors';
 
 export const validateEngineAction = (req: Req, res: Res, next: Next): any => {

@@ -4,7 +4,7 @@ import {
   engineState,
   fuelState,
   vehicleInfo,
-} from '../apiReturnTypes';
+} from '../../apiReturnTypes';
 
 import {
   gmDoorLockState,
