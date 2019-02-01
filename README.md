@@ -1,4 +1,4 @@
-# Documentation
+# Documentation [![Build Status](https://travis-ci.com/morgannewman/smartcar-backend.svg?branch=master)](https://travis-ci.com/morgannewman/smartcar-backend)
 
 Adapting different car APIs to the Smartcar API adds complexity. This project is an attempt to demonstrate one way to manage this complexity using the strategy pattern and type safety.
 
@@ -9,6 +9,8 @@ I made a few simplifying assumptions:
 2. All car API adapters must implement or extend the Smartcar interface
 
 3. The vehicle manufacturer can be derived from the ID
+
+These are things that probably merit more discussion in a real-world application.
 
 Table of Contents
 =================
@@ -23,6 +25,7 @@ Table of Contents
     * [Improve Controller Factory](#improve-controller-factory)
     * [Smarter Error Handling](#smarter-error-handling)
     * [More Flexible Adapters](#more-flexible-adapters)
+    * [Test GM's Backend](#test-gm's-backend)
 
 ---
 
@@ -55,7 +58,7 @@ interface BaseApiMethods {
 
 1. More complexity for a smaller application, but more extensible as new car manufacturers are added.
 
-2. Hard to unit test controllers w/o mocking.
+2. Hard to unit test controllers w/o mocking when using strategy pattern.
 
 ## Request Lifecycle Example
 
@@ -114,13 +117,14 @@ All errors return with the following shape:
 
 ### More Modularization
 
-This app would need more modularization if it were to get any bigger, especially the controller and routes.
+This app would need more modularization if it were to get any bigger, especially the controller, routes, and tests.
 
 ### Improve Controller Factory
 
 As it is now, my controller is brittle. You cannot easily extend functionality for individual layers. If I expected to want to customize each controller layer, it would probably be better to define the base controller as a class and extend/override functionality as needed.
 
 ### Smarter Error Handling
+
 This application is pretty dumb when it comes to handling errors.
 
 ### More Flexible Adapters
@@ -151,3 +155,7 @@ interface engine {
   }
 }
 ```
+
+### Test GM's Backend
+
+Types allow high confidence, but directly unit testing the adapter endpoints (i.e. the ones going to 'Generic Motors') would be very important in a production context.
